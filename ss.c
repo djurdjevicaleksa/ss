@@ -1,5 +1,6 @@
 #include <aio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "ss.h"
 
@@ -49,9 +50,17 @@ StringStruct ss_trim(StringStruct string) {
 StringStruct ss_cut_by_delim(StringStruct* string, const char delimiter) {
 
     size_t i = 0;
-    while(i < string->count && *(string->data + i) != delimiter) i++;
+    while(i < string->count && *(string->data + i) != delimiter) i++; 
     
     StringStruct ret = ss_form_string(string->data, i);
+
+    if(i == string->count) {
+
+        string->data += i - 1;
+        string->count = 0;
+
+        return ret;
+    }
 
     string->data += i + 1;
     string->count -= i + 1;
@@ -104,8 +113,6 @@ StringStruct ss_copy_n(StringStruct ss, size_t n) {
     return ss_form_string(ss.data, l);
 }
 
-
-
 bool c_isdigit(char character) {
 
     return (character >= '0' && character <= '9');
@@ -131,7 +138,33 @@ bool c_isalnum(char character) {
     return c_isdigit(character) || c_isletter(character);
 }
 
+bool ss_isword(StringStruct ss) {
 
+    for(int i = 0; i < ss.count; i++) {
+
+        if(!c_isletter(c_charat(&ss, i))) return false;
+    }
+    return true;
+}
+
+bool ss_isnumber(StringStruct ss) {
+
+    size_t periods = 0;
+
+    for(int i = 0; i < ss.count; i++) {
+
+        if(c_charat(&ss, i) == '.') {
+
+            periods++;
+            
+            if(periods > 1) return false;
+            continue;
+        }
+
+        if(!c_isdigit(c_charat(&ss, i))) return false;
+    }
+    return true;
+}
 
 char c_tolower(char character) {
 
@@ -145,8 +178,25 @@ char c_toupper(char character) {
     return character;
 }
 
+double ss_tod(StringStruct ss) {
 
+    char buffer[ss.count + 1];
+    strncpy(buffer, ss.data, ss.count);
+    buffer[ss.count] = '\0';
 
+    return strtod(buffer, NULL);
+
+}
+
+float ss_tof(StringStruct ss) {
+
+    char buffer[ss.count + 1];
+    strncpy(buffer, ss.data, ss.count);
+    buffer[ss.count] = '\0';
+
+    return strtof(buffer, NULL);
+
+}
 
 bool ss_is_empty(StringStruct* ss) {
 
@@ -184,6 +234,18 @@ bool ss_cmp_ignorecase(StringStruct* ss1, StringStruct* ss2) {
 
         if(c_tolower(*(ss1->data + i)) != c_tolower(*(ss2->data + i))) return false;
     }
+    return true;
+}
+
+bool ss_cmp_cstr(StringStruct* ss, const char* cstr) {
+
+    if(ss->count != strlen(cstr)) return false;
+
+    for(int i = 0; i < ss->count; i++) {
+
+        if(c_charat(ss, i) != cstr[i]) return false;
+    }
+
     return true;
 }
 

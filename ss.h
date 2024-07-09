@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 typedef struct {
     const char* data;
     size_t count;
@@ -130,6 +129,16 @@ bool c_isletter(char character);
 */
 bool c_isalnum(char character);
 
+/*
+    Figures out if an SS is a valid word or not.
+*/
+bool ss_isword(StringStruct ss);
+
+/*
+    Figures out if an SS is a valid number or not. Supports integers and floating point numbers.
+*/
+bool ss_isnumber(StringStruct ss);
+
 
 /*
     Converts a character to lowercase.
@@ -141,7 +150,15 @@ char c_tolower(char character);
 */
 char c_toupper(char character);
 
+/*
+    Converts an SS to a double. Use with ss_isnumber() to ensure validity.
+*/
+double ss_tod(StringStruct ss);
 
+/*
+    Converts an SS to a float. Use with ss_isnumber() to ensure validity.
+*/
+float ss_tof(StringStruct ss);
 
 /*
     Figures out if an SS is empty or not.
@@ -167,6 +184,11 @@ bool ss_cmp(StringStruct* ss1, StringStruct* ss2);
     Figures out if provided SS are equal or not. Not case sensitive.
 */
 bool ss_cmp_ignorecase(StringStruct* ss1, StringStruct* ss2);
+
+/*
+    Figures out if the SS equals the cstring. Case sensitive.
+*/
+bool ss_cmp_cstr(StringStruct* ss, const char* cstr);
 
 /*
     Finds the first occurrence of the specified character in the SS and returns its index.
