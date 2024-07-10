@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#define _SS_IMPLEMENT
 #include "ss.h"
 
 int main(void) {
@@ -25,6 +26,7 @@ int main(void) {
     printf("Cut part: "SSFormat"\n", SSArg(cuts2));
     printf("Rest: "SSFormat"\n", SSArg(s2));
 
+    printf(SSFormat"\n", SSArg(ss_append(cuts1, cuts2)));
 
     return 0;
 }
