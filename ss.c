@@ -113,6 +113,17 @@ StringStruct ss_copy_n(StringStruct ss, size_t n) {
     return ss_form_string(ss.data, l);
 }
 
+StringStruct ss_append(StringStruct base, StringStruct addition) {
+
+    char buffer[base.count + addition.count + 1];
+    memset(buffer, '\0', sizeof(buffer));
+
+    memcpy(buffer, base.data, base.count);
+    memcpy(buffer + base.count, addition.data, addition.count);
+    
+    return ss_form_string_nt(buffer);
+}
+
 bool c_isdigit(char character) {
 
     return (character >= '0' && character <= '9');
@@ -149,6 +160,8 @@ bool ss_isword(StringStruct ss) {
 
 bool ss_isnumber(StringStruct ss) {
 
+    if(ss.count == 0) return false;
+
     size_t periods = 0;
 
     for(int i = 0; i < ss.count; i++) {
@@ -164,6 +177,11 @@ bool ss_isnumber(StringStruct ss) {
         if(!c_isdigit(c_charat(&ss, i))) return false;
     }
     return true;
+}
+
+bool c_isoperator(char c) {
+
+    return (c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == '=' || c == '(' || c == ')');
 }
 
 char c_tolower(char character) {

@@ -100,6 +100,12 @@ StringStruct ss_cut_n(StringStruct* ss, size_t n);
 StringStruct ss_copy_n(StringStruct ss, size_t n);
 
 /*
+    Appends addition to the base SS.
+
+*/
+StringStruct ss_append(StringStruct base, StringStruct addition);
+
+/*
     Figures out if the character is a digit (0 - 9).
 
 */
@@ -139,6 +145,10 @@ bool ss_isword(StringStruct ss);
 */
 bool ss_isnumber(StringStruct ss);
 
+/*
+    Figures out if a character is a mathematical operator or not (+, -, *, /, ^).
+*/
+bool c_isoperator(char c);
 
 /*
     Converts a character to lowercase.
