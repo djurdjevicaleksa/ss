@@ -9,7 +9,7 @@ To use this library, put the `ss.h` header inside the wanted directory and then 
 #define _SS_IMPLEMENT
 #include "ss.h"
 ```
-If typed in reverse order, the library won't work.
+If typed in reverse order, the implementation won't work.
 
 # Keep in mind
 
